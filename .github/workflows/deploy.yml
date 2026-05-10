@@ -21,3 +21,11 @@ jobs:
           key: ${{ secrets.VPS_KEY }}
           source: "index.html"
           target: "/root/landing-page/"
+
+      - name: Restart portfolio container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: docker restart portfolio-preview
