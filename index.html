@@ -4,181 +4,282 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suleman Butt | DevOps Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         /* THEME VARIABLES */
         :root {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #e2e8f0;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --warning: #fb923c;
-            --success: #10b981;
-            --border: rgba(148, 163, 184, 0.3);
+            --bg-primary: #f7f4f1;
+            --bg-secondary: #ede6de;
+            --card-bg: rgba(255, 253, 250, 0.8);
+            --card-border-hi: rgba(255, 255, 255, 0.9);
+            --text-primary: #201810;
+            --text-secondary: #6b6259;
+            --accent: #d97757;
+            --accent-2: #f0a878;
+            --accent-hover: #c1633f;
+            --warning: #ca8a04;
+            --success: #16a34a;
+            --border: rgba(87, 66, 45, 0.16);
+            --shadow-color: rgba(60, 40, 20, 0.12);
+            --mono-fill: rgba(87, 66, 45, 0.05);
+            --dot-color: rgba(87, 66, 45, 0.17);
+            --scanline-opacity: 0;
         }
 
         [data-theme='dark'] {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --accent: #60a5fa;
-            --accent-hover: #3b82f6;
-            --warning: #fb923c;
+            --bg-primary: #120d0a;
+            --bg-secondary: #1c140d;
+            --card-bg: rgba(28, 20, 14, 0.68);
+            --card-border-hi: rgba(255, 255, 255, 0.05);
+            --text-primary: #f3ece4;
+            --text-secondary: #a89c8d;
+            --accent: #e8916f;
+            --accent-2: #f5b88a;
+            --accent-hover: #f0a87d;
+            --warning: #fbbf24;
             --success: #34d399;
-            --border: rgba(148, 163, 184, 0.15);
+            --border: rgba(214, 180, 150, 0.16);
+            --shadow-color: rgba(0, 0, 0, 0.55);
+            --mono-fill: rgba(214, 180, 150, 0.06);
+            --dot-color: rgba(214, 180, 150, 0.22);
+            --scanline-opacity: 0.4;
         }
-        
+
+        html { scroll-behavior: smooth; }
+
         body {
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background:
+                radial-gradient(circle, var(--dot-color) 1px, transparent 1.4px) 0 0/26px 26px,
+                radial-gradient(1100px 750px at 10% -10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent),
+                radial-gradient(950px 680px at 112% 6%, color-mix(in srgb, var(--accent-2) 9%, transparent), transparent),
+                linear-gradient(165deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background-attachment: fixed;
             color: var(--text-primary);
             font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
             min-height: 100vh;
             padding: 2rem;
             position: relative;
-            transition: background 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        [data-theme='dark'] body::before, [data-theme='dark'] body::after {
-            content: ''; position: absolute; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(96, 165, 250, 0.12) 0%, transparent 70%);
-            border-radius: 50%; pointer-events: none; z-index: -1;
+        .scanlines {
+            position: fixed; inset: 0; pointer-events: none; z-index: 50;
+            background: repeating-linear-gradient(to bottom, rgba(255, 220, 190, 0.05) 0px, rgba(255, 220, 190, 0.05) 1px, transparent 1px, transparent 3px);
+            opacity: var(--scanline-opacity); mix-blend-mode: overlay; transition: opacity 0.4s ease;
         }
-        [data-theme='dark'] body::before { top: -300px; right: -300px; animation: float 20s infinite; }
-        [data-theme='dark'] body::after { bottom: -250px; left: -250px; animation: float 25s infinite reverse; }
 
-        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 30px); } }
-        
+        ::selection { background: var(--accent); color: #04121a; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        body::before, body::after {
+            content: ''; position: fixed; width: 620px; height: 620px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.12; border-radius: 50%; pointer-events: none; z-index: -1; filter: blur(10px);
+        }
+        body::before { top: -280px; right: -280px; animation: float 22s ease-in-out infinite; }
+        body::after {
+            bottom: -260px; left: -260px; animation: float 26s ease-in-out infinite reverse;
+            background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%);
+        }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, 40px) scale(1.06); } }
+
         .container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
-        
+
         .nav-card {
-            background: var(--card-bg); backdrop-filter: blur(24px);
-            border: 1px solid var(--border); border-radius: 20px;
-            padding: 1.2rem 2rem; margin-bottom: 2rem;
-            display: flex; justify-content: center; align-items: center; position: relative;
+            background: var(--card-bg); backdrop-filter: blur(24px) saturate(160%); -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid var(--border); border-radius: 14px;
+            padding: 0.5rem 3.2rem 0.5rem 0.6rem; margin-bottom: 2rem;
+            display: flex; justify-content: center; align-items: center; position: sticky; top: 1rem; z-index: 20;
+            box-shadow: 0 8px 30px var(--shadow-color);
         }
-        .nav-links { display: flex; gap: 0.5rem; }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.15rem; }
         .nav-link {
-            padding: 10px 20px; border-radius: 10px; text-decoration: none;
-            color: var(--text-secondary); font-weight: 600; font-size: 0.95rem;
-            transition: all 0.3s ease; cursor: pointer;
+            padding: 9px 14px; border-radius: 8px; text-decoration: none;
+            color: var(--text-secondary); font-weight: 600; font-size: 0.83rem;
+            font-family: 'JetBrains Mono', monospace; white-space: nowrap;
+            transition: all 0.25s ease; cursor: pointer; position: relative;
         }
-        .nav-link:hover, .nav-link.active { background: rgba(96, 165, 250, 0.15); color: var(--accent); }
+        .nav-link:hover { color: var(--text-primary); }
+        .nav-link.active { color: var(--accent); }
+        .nav-link.active::after {
+            content: ''; position: absolute; left: 12px; right: 12px; bottom: 3px; height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            border-radius: 2px; box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 70%, transparent);
+        }
 
         .theme-toggle {
-            position: absolute; right: 2rem; background: none; border: 1px solid var(--border);
-            color: var(--text-secondary); padding: 8px; border-radius: 10px; cursor: pointer;
-            transition: 0.3s;
+            position: absolute; right: 0.6rem; background: none; border: 1px solid var(--border);
+            color: var(--text-secondary); width: 38px; height: 38px; border-radius: 9px; cursor: pointer;
+            transition: 0.25s; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;
         }
-        .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
-        
-        .page { display: none; animation: fadeInUp 0.8s ease-out; }
-        .page.active { display: block; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        
+        .theme-toggle:hover { border-color: var(--accent); color: var(--accent); transform: rotate(12deg); }
+
+        .page { display: none; }
+        .page.active { display: block; animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
         .card {
-            background: var(--card-bg); backdrop-filter: blur(24px);
-            border: 1px solid var(--border); border-radius: 24px;
-            padding: 3.5rem; box-shadow: 0 25px 70px rgba(0, 0, 0, 0.1); margin-bottom: 2rem;
+            background: var(--card-bg); backdrop-filter: blur(24px) saturate(160%); -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid var(--border); border-radius: 16px;
+            box-shadow: 0 30px 80px -20px var(--shadow-color), inset 0 1px 0 var(--card-border-hi);
+            margin-bottom: 2rem; overflow: hidden;
         }
-        [data-theme='dark'] .card { box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5); }
-        
-        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem; }
+        .term-bar {
+            display: flex; align-items: center; gap: 8px;
+            padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border);
+            background: color-mix(in srgb, var(--text-secondary) 4%, transparent);
+        }
+        .term-dot { width: 11px; height: 11px; border-radius: 50%; opacity: 0.85; }
+        .term-title {
+            margin-left: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+            color: var(--text-secondary); letter-spacing: 0.02em;
+        }
+        .card-body { padding: clamp(1.5rem, 4vw, 3.25rem); }
+
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.75rem; flex-wrap: wrap; gap: 1.5rem; }
         .name {
-            font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.6rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(1.4rem, 2.2vw, 1.85rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem;
+            color: var(--text-primary);
         }
-        .domain { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.95rem; font-weight: 500; }
-        
-        .status-badge {
-            display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px;
-            background: rgba(251, 146, 60, 0.1); border: 1px solid rgba(251, 146, 60, 0.2);
-            border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--warning);
+        .domain { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.88rem; font-weight: 500; }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600;
+            color: var(--accent); margin-bottom: 0.7rem; display: flex; align-items: center; gap: 8px;
         }
-        .status-dot { width: 8px; height: 8px; background: var(--warning); border-radius: 50%; animation: pulseGlow 2s infinite; }
-        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.4); } 50% { box-shadow: 0 0 0 12px rgba(251, 146, 60, 0); } }
-        
-        .title { font-size: 3.5rem; font-weight: 800; line-height: 1.15; margin-bottom: 1.5rem; }
-        .description { font-size: 1.2rem; line-height: 1.8; color: var(--text-secondary); max-width: 820px; margin-bottom: 2rem; }
-        
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin-bottom: 3rem; }
-        .project-card { background: rgba(148, 163, 184, 0.05); border: 1px solid var(--border); padding: 2.2rem; border-radius: 18px; transition: 0.3s ease; display: flex; flex-direction: column; }
-        .project-card:hover { transform: translateY(-6px); border-color: var(--accent); }
-        
-        .project-status { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono'; font-size: 0.72rem; color: var(--warning); margin-bottom: 1.2rem; font-weight: 600; }
+        .eyebrow-lg { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; gap: 10px; }
+
+        .title { font-size: clamp(1.9rem, 4vw, 3.1rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.14; margin-bottom: 1.4rem; }
+        .cursor { display: inline-block; color: var(--accent); animation: blinkCursor 1.1s steps(2) infinite; font-weight: 400; }
+        @keyframes blinkCursor { 50%, 100% { opacity: 0; } 0%, 49% { opacity: 1; } }
+        .description { font-size: clamp(1rem, 1.2vw, 1.15rem); line-height: 1.8; color: var(--text-secondary); max-width: 780px; margin-bottom: 2rem; }
+
+        .section-badge {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em;
+            text-transform: lowercase; padding: 5px 14px; border-radius: 8px; display: inline-block;
+        }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; margin-bottom: 2.75rem; }
+        .project-card {
+            background: var(--mono-fill);
+            border: 1px solid var(--border); padding: 1.85rem; border-radius: 12px;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+            display: flex; flex-direction: column; position: relative;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+            box-shadow: 0 18px 38px -18px color-mix(in srgb, var(--accent) 45%, transparent);
+        }
+
+        .project-status { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--warning); margin-bottom: 1.1rem; font-weight: 700; letter-spacing: 0.02em; }
         .project-status.completed { color: var(--success); }
         .status-indicator { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
         .blink { animation: blink 1.5s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        
-        .project-card h4 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--text-primary); }
-        .project-card p { color: var(--text-secondary); font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; flex-grow: 1; }
-        .tech-tag { font-family: 'JetBrains Mono'; font-size: 0.72rem; padding: 6px 14px; background: rgba(148, 163, 184, 0.1); border-radius: 8px; color: var(--text-secondary); margin-right: 5px; margin-bottom: 5px; }
 
-        /* GITHUB LINK STYLE */
+        .project-card h4 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.85rem; color: var(--text-primary); }
+        .project-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.68; margin-bottom: 1.3rem; flex-grow: 1; }
+        .tech-tag {
+            font-family: 'JetBrains Mono'; font-size: 0.67rem; font-weight: 500; padding: 5px 11px;
+            background: var(--mono-fill); border: 1px solid var(--border);
+            border-radius: 6px; color: var(--text-secondary); margin-right: 5px; margin-bottom: 5px; display: inline-block;
+        }
+
         .project-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 1.5rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 700;
-            transition: 0.3s;
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 1.3rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent); text-decoration: none; font-size: 0.84rem; font-weight: 700; transition: 0.25s; width: fit-content;
         }
-        .project-link:hover {
-            color: var(--accent-hover);
-            transform: translateX(5px);
-        }
+        .project-link:hover { color: var(--accent-hover); transform: translateX(5px); }
 
-        .cta-group { display: flex; justify-content: center; margin-bottom: 2.5rem; }
-        .btn-primary { 
-            display: inline-flex; align-items: center; gap: 12px; padding: 16px 40px; 
-            border-radius: 14px; text-decoration: none; font-weight: 600; color: white; background: var(--accent); 
-            transition: 0.3s;
+        .cta-group { display: flex; justify-content: center; margin-bottom: 2.25rem; }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 10px; padding: 14px 34px;
+            border-radius: 10px; text-decoration: none; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.92rem;
+            color: var(--accent); background: transparent; border: 1px solid var(--accent);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
         }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(96, 165, 250, 0.4); }
+        .btn-primary:hover {
+            transform: translateY(-3px); color: #04121a; background: var(--accent);
+            box-shadow: 0 16px 36px -8px color-mix(in srgb, var(--accent) 65%, transparent);
+        }
 
         /* ABOUT SPLIT LAYOUT */
-        .about-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-            margin: 2.5rem 0;
-        }
-        .about-col h3 { font-size: 1.4rem; margin-bottom: 1.2rem; color: var(--accent); display: flex; align-items: center; gap: 10px; }
-        .about-col p { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1rem; }
-        
+        .about-split { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; margin: 2.25rem 0; }
+        .about-col h3 { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 700; margin-bottom: 1.1rem; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+        .about-col p { font-size: 1rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 1rem; }
+
         .stack-list { list-style: none; margin-top: 1rem; }
         .stack-list li {
-            padding: 8px 0; border-bottom: 1px solid var(--border);
-            font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
-            display: flex; justify-content: space-between;
+            padding: 10px 2px; border-bottom: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+            display: flex; justify-content: space-between; align-items: center;
         }
         .stack-list li span { color: var(--success); font-weight: 700; }
 
-        .skills-grid-clean { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
-        .skill-pill { background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.3); color: var(--success); padding: 8px 20px; border-radius: 100px; font-weight: 600; font-size: 0.95rem; }
+        .skills-grid-clean { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.4rem; }
+        .skill-pill {
+            font-family: 'JetBrains Mono', monospace;
+            background: color-mix(in srgb, var(--success) 10%, transparent); border: 1px solid color-mix(in srgb, var(--success) 32%, transparent);
+            color: var(--success); padding: 7px 16px; border-radius: 8px; font-weight: 600; font-size: 0.83rem;
+            transition: 0.25s;
+        }
+        .skill-pill:hover { background: color-mix(in srgb, var(--success) 18%, transparent); transform: translateY(-2px); }
 
-        .footer { border-top: 1px solid var(--border); padding-top: 2rem; display: flex; justify-content: space-between; font-family: 'JetBrains Mono'; font-size: 0.78rem; color: var(--text-secondary); }
+        /* COMMAND CHEATSHEET PAGES */
+        .cmd-category { margin-bottom: 2.25rem; }
+        .cmd-category:last-child { margin-bottom: 2.75rem; }
+        .cmd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 0.85rem; margin-top: 1rem; }
+        .cmd-card {
+            background: var(--mono-fill); border: 1px solid var(--border); border-radius: 10px;
+            padding: 1rem 1.1rem; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cmd-card:hover {
+            transform: translateY(-3px);
+            border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+            box-shadow: 0 14px 30px -16px color-mix(in srgb, var(--accent) 50%, transparent);
+        }
+        .cmd-name { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.9rem; color: var(--accent); }
+        .cmd-example {
+            display: block; width: fit-content; margin-top: 0.55rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-secondary);
+            background: color-mix(in srgb, var(--text-secondary) 8%, transparent); padding: 3px 9px; border-radius: 5px;
+        }
+        .cmd-desc { font-size: 0.86rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.55rem; }
 
-        @media (max-width: 850px) { .about-split { grid-template-columns: 1fr; } .title { font-size: 2.5rem; } }
+        .footer {
+            border-top: 1px solid var(--border); padding-top: 1.6rem; margin-top: 0.5rem;
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+            font-family: 'JetBrains Mono'; font-size: 0.72rem; color: var(--text-secondary); letter-spacing: 0.01em;
+        }
+
+        @media (max-width: 850px) {
+            .about-split { grid-template-columns: 1fr; }
+            body { padding: 1.1rem; }
+            .nav-card { padding: 0.5rem 3rem 0.5rem 0.5rem; }
+            .nav-link { padding: 7px 10px; font-size: 0.74rem; }
+        }
     </style>
 </head>
 <body>
+    <div class="scanlines"></div>
     <div class="container">
         <div class="nav-card">
             <nav class="nav-links">
-                <a class="nav-link active" data-page="home">Home</a>
-                <a class="nav-link" data-page="about">About & Contact</a>
+                <a class="nav-link active" data-page="home">~/home</a>
+                <a class="nav-link" data-page="about">~/about</a>
+                <a class="nav-link" data-page="linux">~/linux</a>
+                <a class="nav-link" data-page="docker">~/docker</a>
+                <a class="nav-link" data-page="kubernetes">~/k8s</a>
             </nav>
             <button class="theme-toggle" id="theme-btn">
                 <span id="theme-icon">🌙</span>
@@ -187,138 +288,433 @@
 
         <div id="home" class="page active">
             <div class="card">
-                <div class="header">
-                    <div class="brand">
-                        <div class="name">Suleman Butt</div>
-                        <div class="domain">www.sulemanb.com</div>
-                    </div>
-                    <div class="status-badge"><div class="status-dot"></div>Under Construction</div>
+                <div class="term-bar">
+                    <span class="term-dot" style="background:#ef4444;"></span>
+                    <span class="term-dot" style="background:#f59e0b;"></span>
+                    <span class="term-dot" style="background:#22c55e;"></span>
+                    <span class="term-title">home.sh</span>
                 </div>
-
-                <h1 class="title">DevOps Portfolio</h1>
-                <p class="description">I architect reliable, high-availability systems with a quality-first mindset. Currently, I’m building a series of DevOps projects designed to solve real-world infrastructure challenges. I’m passionate about creating the kind of automated, scalable systems that empower teams to ship better software at high speed.</p>
-
-                <!-- BEGINNER -->
-                <div style="margin-bottom:0.5rem;margin-top:0.5rem;">
-                    <span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--success);text-transform:uppercase;padding:5px 14px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:50px;">▸ Beginner</span>
-                </div>
-                <div class="projects-grid" style="margin-bottom:2rem;">
-                    <div class="project-card" style="border-color: var(--success);">
-                        <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
-                        <h4>Secure Edge-to-Container Stack</h4>
-                        <p>Hardened Linux server on Hetzner VPS from scratch. Cloudflare CDN with Nginx Reverse Proxy in Docker, UFW firewall, and SSL via Let's Encrypt.</p>
-                        <div class="tech-stack"><span class="tech-tag">VPS</span><span class="tech-tag">Ubuntu</span><span class="tech-tag">Docker</span><span class="tech-tag">Nginx</span><span class="tech-tag">Cloudflare</span></div>
-                        <a href="https://github.com/1010sb/my-portfolio-website" target="_blank" class="project-link">View Project GitHub →</a>
+                <div class="card-body">
+                    <div class="header">
+                        <div class="brand">
+                            <div class="name">Suleman Butt</div>
+                            <div class="domain">www.sulemanb.com</div>
+                        </div>
                     </div>
 
-                    <div class="project-card" style="border-color: var(--success);">
-                        <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
-                        <h4>Stock Sentiment Analysis</h4>
-                        <p>NLP pipeline analysing 4.1M tweets across 5 stocks (TSLA, NVDA, PLTR, PG, NEE) using FinBERT. Spearman correlation between sentiment and price movement.</p>
-                        <div class="tech-stack"><span class="tech-tag">Python</span><span class="tech-tag">FinBERT</span><span class="tech-tag">NLP</span><span class="tech-tag">Pandas</span><span class="tech-tag">Data Science</span></div>
-                        <a href="https://github.com/1010sb/StockSentimentAnalysis" target="_blank" class="project-link">View Project GitHub →</a>
+                    <div class="eyebrow eyebrow-lg">$ whoami</div>
+                    <h1 class="title">QA Engineer → DevOps Engineer<span class="cursor">_</span></h1>
+                    <p class="description">I architect reliable, high-availability systems with a quality-first mindset. Currently, I’m building a series of DevOps projects designed to solve real-world infrastructure challenges. I’m passionate about creating the kind of automated, scalable systems that empower teams to ship better software at high speed.</p>
+
+                    <!-- BEGINNER -->
+                    <div style="margin-bottom:0.5rem;margin-top:0.5rem;">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># beginner</span>
                     </div>
-                </div>
+                    <div class="projects-grid" style="margin-bottom:1.8rem;">
+                        <div class="project-card" style="border-color: color-mix(in srgb, var(--success) 55%, var(--border));">
+                            <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
+                            <h4>Secure Edge-to-Container Stack</h4>
+                            <p>Hardened Linux server on Hetzner VPS from scratch. Cloudflare CDN with Nginx Reverse Proxy in Docker, UFW firewall, and SSL via Let's Encrypt.</p>
+                            <div class="tech-stack"><span class="tech-tag">VPS</span><span class="tech-tag">Ubuntu</span><span class="tech-tag">Docker</span><span class="tech-tag">Nginx</span><span class="tech-tag">Cloudflare</span></div>
+                            <a href="https://github.com/1010sb/my-portfolio-website" target="_blank" class="project-link">View Project GitHub →</a>
+                        </div>
 
-                <!-- INTERMEDIATE -->
-                <div style="margin-bottom:0.5rem;">
-                    <span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--warning);text-transform:uppercase;padding:5px 14px;background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);border-radius:50px;">▸ Intermediate</span>
-                </div>
-                <div class="projects-grid" style="margin-bottom:2rem;">
-                    <div class="project-card">
-                        <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
-                        <h4>CI/CD Pipeline Automation</h4>
-                        <p>End-to-end automated pipeline with integrated security scanning and artifact management deploying to the VPS on every push.</p>
-                        <div class="tech-stack"><span class="tech-tag">GitHub Actions</span><span class="tech-tag">Docker</span><span class="tech-tag">SonarQube</span></div>
+                        <div class="project-card" style="border-color: color-mix(in srgb, var(--success) 55%, var(--border));">
+                            <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
+                            <h4>Stock Sentiment Analysis</h4>
+                            <p>NLP pipeline analysing 4.1M tweets across 5 stocks (TSLA, NVDA, PLTR, PG, NEE) using FinBERT. Spearman correlation between sentiment and price movement.</p>
+                            <div class="tech-stack"><span class="tech-tag">Python</span><span class="tech-tag">FinBERT</span><span class="tech-tag">NLP</span><span class="tech-tag">Pandas</span><span class="tech-tag">Data Science</span></div>
+                            <a href="https://github.com/1010sb/StockSentimentAnalysis" target="_blank" class="project-link">View Project GitHub →</a>
+                        </div>
                     </div>
 
-                    <div class="project-card">
-                        <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
-                        <h4>Cloud Infrastructure as Code</h4>
-                        <p>Modular infrastructure templates for GCP with automated provisioning. Reproducible environments managed entirely through code.</p>
-                        <div class="tech-stack"><span class="tech-tag">Terraform</span><span class="tech-tag">Ansible</span><span class="tech-tag">GCP</span></div>
+                    <!-- INTERMEDIATE -->
+                    <div style="margin-bottom:0.5rem;">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># intermediate</span>
                     </div>
-                </div>
+                    <div class="projects-grid" style="margin-bottom:1.8rem;">
+                        <div class="project-card">
+                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
+                            <h4>CI/CD Pipeline Automation</h4>
+                            <p>End-to-end automated pipeline with integrated security scanning and artifact management deploying to the VPS on every push.</p>
+                            <div class="tech-stack"><span class="tech-tag">GitHub Actions</span><span class="tech-tag">Docker</span><span class="tech-tag">SonarQube</span></div>
+                        </div>
 
-                <!-- ADVANCED -->
-                <div style="margin-bottom:0.5rem;">
-                    <span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--accent);text-transform:uppercase;padding:5px 14px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:50px;">▸ Advanced</span>
-                </div>
-                <div class="projects-grid" style="margin-bottom:3rem;">
-                    <div class="project-card">
-                        <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
-                        <h4>Kubernetes GitOps Platform</h4>
-                        <p>Fully automated GitOps deployments with service mesh and Prometheus monitoring on GCP GKE. Infrastructure and application state managed via Git.</p>
-                        <div class="tech-stack"><span class="tech-tag">Kubernetes</span><span class="tech-tag">ArgoCD</span><span class="tech-tag">Helm</span><span class="tech-tag">Prometheus</span><span class="tech-tag">GCP GKE</span></div>
+                        <div class="project-card">
+                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
+                            <h4>Cloud Infrastructure as Code</h4>
+                            <p>Modular infrastructure templates for GCP with automated provisioning. Reproducible environments managed entirely through code.</p>
+                            <div class="tech-stack"><span class="tech-tag">Terraform</span><span class="tech-tag">Ansible</span><span class="tech-tag">GCP</span></div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="cta-group">
-                    <a href="https://www.linkedin.com/in/suleman-butt" target="_blank" class="btn-primary">Connect on LinkedIn →</a>
-                </div>
+                    <!-- ADVANCED -->
+                    <div style="margin-bottom:0.5rem;">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># advanced</span>
+                    </div>
+                    <div class="projects-grid" style="margin-bottom:2.75rem;">
+                        <div class="project-card">
+                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
+                            <h4>Kubernetes GitOps Platform</h4>
+                            <p>Fully automated GitOps deployments with service mesh and Prometheus monitoring on GCP GKE. Infrastructure and application state managed via Git.</p>
+                            <div class="tech-stack"><span class="tech-tag">Kubernetes</span><span class="tech-tag">ArgoCD</span><span class="tech-tag">Helm</span><span class="tech-tag">Prometheus</span><span class="tech-tag">GCP GKE</span></div>
+                        </div>
+                    </div>
 
-                <div class="footer">
-                    <div>© 2026 SULEMAN BUTT</div>
-                    <div>STATUS: ACTIVE | v1.5 </div>
+                    <div class="cta-group">
+                        <a href="https://www.linkedin.com/in/suleman-butt" target="_blank" class="btn-primary">Connect on LinkedIn →</a>
+                    </div>
+
+                    <div class="footer">
+                        <div>© 2026 SULEMAN BUTT</div>
+                        <div>STATUS: ACTIVE | v1.7 </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="about" class="page">
             <div class="card">
-                <h1 class="title">Professional Profile</h1>
-                <p class="description">Leveraging my roots in Quality Assurance to build the next generation of High-Performance, Automated Cloud Infrastructure.</p>
+                <div class="term-bar">
+                    <span class="term-dot" style="background:#ef4444;"></span>
+                    <span class="term-dot" style="background:#f59e0b;"></span>
+                    <span class="term-dot" style="background:#22c55e;"></span>
+                    <span class="term-title">about.md</span>
+                </div>
+                <div class="card-body">
+                    <div class="eyebrow eyebrow-lg">$ cat about.md</div>
+                    <h1 class="title">Professional Profile<span class="cursor">_</span></h1>
+                    <p class="description">Leveraging my roots in Quality Assurance to build the next generation of High-Performance, Automated Cloud Infrastructure.</p>
 
-                <div class="about-split">
-                    <div class="about-col">
-                        <h3><span>💼</span> Professional Experience</h3>
-                        <p>Working as a <b>QA Engineer at Rossmann</b> since 2023. I ensure the resilience of the POS Eco-System and mission-critical retail infrastructure.</p>
-                        <ul class="stack-list">
-                            <li>Workplace Infrastructure <span>Active</span></li>
-                            <li>Linux Systems Administration <span>✓</span></li>
-                            <li>Google Cloud Platform <span>✓</span></li>
-                            <li>Datadog Observability <span>✓</span></li>
-                        </ul>
+                    <div class="about-split">
+                        <div class="about-col">
+                            <h3><span>💼</span> Professional Experience</h3>
+                            <p>Working as a <b>QA Engineer at Rossmann</b> since 2023. I ensure the resilience of the POS Eco-System and mission-critical retail infrastructure.</p>
+                            <ul class="stack-list">
+                                <li>Workplace Infrastructure <span>Active</span></li>
+                                <li>Linux Systems Administration <span>✓</span></li>
+                                <li>Google Cloud Platform <span>✓</span></li>
+                                <li>Datadog Observability <span>✓</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="about-col">
+                            <h3><span>🎓</span> Academic Journey</h3>
+                            <p>Currently pursuing an <b>M.Sc. DevOps & Cloud</b>. My research and studies focus on scalable, secure, and automated delivery lifecycles.</p>
+                            <ul class="stack-list">
+                                <li>Study & Research <span>Focus</span></li>
+                                <li>Python Scripting <span>✓</span></li>
+                                <li>Terraform (IaC) <span>Learning</span></li>
+                                <li>GitHub Actions & CI/CD <span>Learning</span></li>
+                                <li>Docker & Kubernetes <span>Learning</span></li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="about-col">
-                        <h3><span>🎓</span> Academic Journey</h3>
-                        <p>Currently pursuing an <b>M.Sc. DevOps & Cloud</b>. My research and studies focus on scalable, secure, and automated delivery lifecycles.</p>
-                        <ul class="stack-list">
-                            <li>Study & Research <span>Focus</span></li>
-                            <li>Python Scripting <span>✓</span></li>
-                            <li>Terraform (IaC) <span>Learning</span></li>
-                            <li>GitHub Actions & CI/CD <span>Learning</span></li>
-                            <li>Docker & Kubernetes <span>Learning</span></li>
-                        </ul>
+                    <h3 style="font-family:'JetBrains Mono', monospace; font-size:1.05rem; margin-top: 2.75rem;">Global Skill Stack</h3>
+                    <div class="skills-grid-clean">
+                        <div class="skill-pill">Linux</div><div class="skill-pill">Python</div><div class="skill-pill">GCP</div>
+                        <div class="skill-pill">Docker</div><div class="skill-pill">Kubernetes</div><div class="skill-pill">Git</div>
+                        <div class="skill-pill">GitHub Action</div><div class="skill-pill">CI CD</div><div class="skill-pill">Terraform</div>
+                        <div class="skill-pill">Datadog</div>
+                    </div>
+
+                    <div class="eyebrow eyebrow-lg" style="margin-top: 3.25rem;">$ contact --show</div>
+                    <h2 class="title" style="font-size: 2.1rem; margin-bottom: 1.4rem;">Get In Touch<span class="cursor">_</span></h2>
+                    <div class="projects-grid" style="margin-bottom: 0;">
+                        <div class="project-card" style="text-align: center;">
+                            <div style="font-size: 1.8rem; margin-bottom: 0.9rem;">💼</div>
+                            <h4>LinkedIn</h4>
+                            <a href="https://www.linkedin.com/in/suleman-butt" class="project-link" style="margin: 0 auto;">Visit Profile →</a>
+                        </div>
+                        <div class="project-card" style="text-align: center;">
+                            <div style="font-size: 1.8rem; margin-bottom: 0.9rem;">📧</div>
+                            <h4>Email</h4>
+                            <a href="mailto:sahamd.ent@gmail.com" class="project-link" style="margin: 0 auto;">Send Email →</a>
+                        </div>
+                    </div>
+
+                    <div class="footer" style="margin-top: 2.75rem;">
+                        <span>© 2026 SULEMAN BUTT</span>
+                        <div>STATUS: ACTIVE | v1.7 </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <h3 style="margin-top: 3rem;">Global Skill Stack</h3>
-                <div class="skills-grid-clean">
-                    <div class="skill-pill">Linux</div><div class="skill-pill">Python</div><div class="skill-pill">GCP</div>
-                    <div class="skill-pill">Docker</div><div class="skill-pill">Kubernetes</div><div class="skill-pill">Git</div>
-                    <div class="skill-pill">GitHub Action</div><div class="skill-pill">CI CD</div><div class="skill-pill">Terraform</div>
-                    <div class="skill-pill">Datadog</div>
+        <div id="linux" class="page">
+            <div class="card">
+                <div class="term-bar">
+                    <span class="term-dot" style="background:#ef4444;"></span>
+                    <span class="term-dot" style="background:#f59e0b;"></span>
+                    <span class="term-dot" style="background:#22c55e;"></span>
+                    <span class="term-title">linux.sh</span>
                 </div>
+                <div class="card-body">
+                    <div class="eyebrow eyebrow-lg">$ man linux-essentials</div>
+                    <h1 class="title">Linux Commands for DevOps<span class="cursor">_</span></h1>
+                    <p class="description">50 commands I reach for constantly — process and system inspection, disk and files, networking, permissions, text processing, package management, shell environment, and automation.</p>
 
-                <h2 class="title" style="font-size: 2.5rem; margin-top: 4rem;">Get In Touch</h2>
-                <div class="projects-grid">
-                    <div class="project-card" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">💼</div>
-                        <h4>LinkedIn</h4>
-                        <a href="https://www.linkedin.com/in/suleman-butt" style="color: var(--accent); text-decoration: none; font-weight: 700;">Visit Profile →</a>
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># system &amp; process</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ top</div><span class="cmd-example">top</span><p class="cmd-desc">Real-time view of running processes and resource usage.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ htop</div><span class="cmd-example">htop</span><p class="cmd-desc">Interactive, color process viewer — a friendlier top.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ps aux</div><span class="cmd-example">ps aux | grep nginx</span><p class="cmd-desc">List all running processes with full details.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ kill -9</div><span class="cmd-example">kill -9 1234</span><p class="cmd-desc">Force-terminate a process by its PID.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ pkill</div><span class="cmd-example">pkill -f node</span><p class="cmd-desc">Kill process(es) by name instead of PID.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ systemctl</div><span class="cmd-example">systemctl status nginx</span><p class="cmd-desc">Start, stop, restart, or check a systemd-managed service.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ journalctl -xe</div><span class="cmd-example">journalctl -xe</span><p class="cmd-desc">Inspect recent system logs with extra diagnostic context.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ uptime</div><span class="cmd-example">uptime</span><p class="cmd-desc">Show how long the system has been up and its load average.</p></div>
+                        </div>
                     </div>
-                    <div class="project-card" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 1rem;">📧</div>
-                        <h4>Email</h4>
-                        <a href="mailto:sahamd.ent@gmail.com" style="color: var(--accent); text-decoration: none; font-weight: 700;">Send Email →</a>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># disk &amp; files</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ df -h</div><span class="cmd-example">df -h</span><p class="cmd-desc">Show disk space usage in human-readable form.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ du -sh</div><span class="cmd-example">du -sh /var/log</span><p class="cmd-desc">Show the total size of a directory.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ find</div><span class="cmd-example">find / -name "*.log"</span><p class="cmd-desc">Search the filesystem for files matching a pattern.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ tar -czvf</div><span class="cmd-example">tar -czvf backup.tar.gz ./app</span><p class="cmd-desc">Create a compressed tar archive.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ rsync -avz</div><span class="cmd-example">rsync -avz ./app user@host:/srv</span><p class="cmd-desc">Efficiently sync files and directories, locally or remote.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ lsof</div><span class="cmd-example">lsof -i :8080</span><p class="cmd-desc">List open files and which process is using a given port.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ mount</div><span class="cmd-example">mount /dev/sdb1 /mnt/data</span><p class="cmd-desc">Attach a filesystem or device to a directory.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ln -s</div><span class="cmd-example">ln -s /opt/app/current /opt/app/live</span><p class="cmd-desc">Create a symbolic link to a file or directory.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># networking</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ ss -tulpn</div><span class="cmd-example">ss -tulpn</span><p class="cmd-desc">Show listening ports and the processes bound to them.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ curl -I</div><span class="cmd-example">curl -I https://example.com</span><p class="cmd-desc">Fetch HTTP headers to check a service is responding.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ping</div><span class="cmd-example">ping -c 4 8.8.8.8</span><p class="cmd-desc">Test basic connectivity to a host.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ traceroute</div><span class="cmd-example">traceroute example.com</span><p class="cmd-desc">Trace the network path packets take to a host.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ssh</div><span class="cmd-example">ssh user@server</span><p class="cmd-desc">Open a secure shell session on a remote host.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ scp</div><span class="cmd-example">scp app.tar.gz user@server:/opt</span><p class="cmd-desc">Copy files securely to or from a remote host over SSH.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ dig</div><span class="cmd-example">dig example.com +short</span><p class="cmd-desc">Query DNS records for a domain.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ wget</div><span class="cmd-example">wget https://example.com/file.tar.gz</span><p class="cmd-desc">Download a file over HTTP/HTTPS/FTP.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># permissions &amp; users</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ chmod</div><span class="cmd-example">chmod 755 deploy.sh</span><p class="cmd-desc">Change a file's read/write/execute permissions.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ chown</div><span class="cmd-example">chown www-data:www-data /var/www</span><p class="cmd-desc">Change a file's owning user and group.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ sudo</div><span class="cmd-example">sudo systemctl restart nginx</span><p class="cmd-desc">Run a single command with elevated privileges.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ whoami</div><span class="cmd-example">whoami</span><p class="cmd-desc">Show the currently logged-in user.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ useradd</div><span class="cmd-example">useradd -m -s /bin/bash deploy</span><p class="cmd-desc">Create a new system user with a home directory and shell.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ passwd</div><span class="cmd-example">passwd deploy</span><p class="cmd-desc">Set or change a user's password.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># text &amp; search</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ grep -r</div><span class="cmd-example">grep -r "ERROR" /var/log</span><p class="cmd-desc">Recursively search file contents for a pattern.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ awk</div><span class="cmd-example">awk '{print $1}' access.log</span><p class="cmd-desc">Extract and process columns of text.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ sed -i</div><span class="cmd-example">sed -i 's/DEBUG/INFO/' config.yml</span><p class="cmd-desc">Find and replace text in a file in place.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ tail -f</div><span class="cmd-example">tail -f /var/log/syslog</span><p class="cmd-desc">Follow a log file in real time as it's written.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ cat</div><span class="cmd-example">cat /etc/os-release</span><p class="cmd-desc">Print a file's contents to standard output.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ less</div><span class="cmd-example">less /var/log/syslog</span><p class="cmd-desc">Page through a file's contents interactively.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ wc -l</div><span class="cmd-example">wc -l access.log</span><p class="cmd-desc">Count lines, words, or bytes in a file.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># automation &amp; scheduling</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ crontab -e</div><span class="cmd-example">crontab -e</span><p class="cmd-desc">Edit scheduled cron jobs for the current user.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ nohup</div><span class="cmd-example">nohup ./deploy.sh &amp;</span><p class="cmd-desc">Run a command immune to hangups after logout.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ alias</div><span class="cmd-example">alias ll='ls -la'</span><p class="cmd-desc">Create a shortcut for a longer command.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ xargs</div><span class="cmd-example">find . -name "*.tmp" | xargs rm</span><p class="cmd-desc">Build and run commands from piped input.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># package management</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ apt update</div><span class="cmd-example">sudo apt update && sudo apt upgrade -y</span><p class="cmd-desc">Refresh package lists and upgrade installed packages.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ apt install</div><span class="cmd-example">sudo apt install nginx</span><p class="cmd-desc">Install a package on Debian/Ubuntu systems.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ dpkg -l</div><span class="cmd-example">dpkg -l | grep docker</span><p class="cmd-desc">List all installed packages on the system.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ which</div><span class="cmd-example">which python3</span><p class="cmd-desc">Show the full path of a command's executable.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># environment &amp; shell</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ env</div><span class="cmd-example">env | grep PATH</span><p class="cmd-desc">Print all current environment variables.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ export</div><span class="cmd-example">export NODE_ENV=production</span><p class="cmd-desc">Set an environment variable for the current shell session.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ history</div><span class="cmd-example">history | grep docker</span><p class="cmd-desc">Show previously run shell commands.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ uname -a</div><span class="cmd-example">uname -a</span><p class="cmd-desc">Print kernel name, version, and system architecture.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ source</div><span class="cmd-example">source ~/.bashrc</span><p class="cmd-desc">Reload a shell script or config into the current session.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <span>© 2026 SULEMAN BUTT</span>
+                        <div>STATUS: ACTIVE | v1.7 </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="footer">
-                    <span>© 2026 SULEMAN BUTT</span>
-                    <div>STATUS: ACTIVE | v1.5 </div>
+        <div id="docker" class="page">
+            <div class="card">
+                <div class="term-bar">
+                    <span class="term-dot" style="background:#ef4444;"></span>
+                    <span class="term-dot" style="background:#f59e0b;"></span>
+                    <span class="term-dot" style="background:#22c55e;"></span>
+                    <span class="term-title">docker.sh</span>
+                </div>
+                <div class="card-body">
+                    <div class="eyebrow eyebrow-lg">$ docker --help</div>
+                    <h1 class="title">Docker Essentials<span class="cursor">_</span></h1>
+                    <p class="description">25 commands covering the day-to-day Docker workflow — building and managing images, running and debugging containers, volumes and networks, and Compose.</p>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># images</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ docker build</div><span class="cmd-example">docker build -t myapp:latest .</span><p class="cmd-desc">Build an image from a Dockerfile in the current directory.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker images</div><span class="cmd-example">docker images</span><p class="cmd-desc">List all locally stored images.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker pull</div><span class="cmd-example">docker pull nginx:alpine</span><p class="cmd-desc">Download an image from a registry.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker push</div><span class="cmd-example">docker push myrepo/myapp:latest</span><p class="cmd-desc">Upload an image to a registry.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker tag</div><span class="cmd-example">docker tag myapp:latest myrepo/myapp:1.0</span><p class="cmd-desc">Tag an image with a new name or version.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker rmi</div><span class="cmd-example">docker rmi myapp:old</span><p class="cmd-desc">Remove one or more local images.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># containers</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ docker run</div><span class="cmd-example">docker run -d -p 8080:80 nginx</span><p class="cmd-desc">Create and start a new container from an image.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker ps</div><span class="cmd-example">docker ps -a</span><p class="cmd-desc">List containers — add -a to include stopped ones.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker stop</div><span class="cmd-example">docker stop web</span><p class="cmd-desc">Gracefully stop a running container.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker start</div><span class="cmd-example">docker start web</span><p class="cmd-desc">Start a previously stopped container.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker restart</div><span class="cmd-example">docker restart web</span><p class="cmd-desc">Restart a container.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker rm</div><span class="cmd-example">docker rm web</span><p class="cmd-desc">Remove a stopped container.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># logs, inspect &amp; debug</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ docker exec -it</div><span class="cmd-example">docker exec -it web sh</span><p class="cmd-desc">Run a command inside a running container, e.g. an interactive shell.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker logs -f</div><span class="cmd-example">docker logs -f web</span><p class="cmd-desc">Follow a container's log output in real time.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker inspect</div><span class="cmd-example">docker inspect web</span><p class="cmd-desc">Show detailed low-level info about a container or image.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker top</div><span class="cmd-example">docker top web</span><p class="cmd-desc">Show the running processes inside a container.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker stats</div><span class="cmd-example">docker stats</span><p class="cmd-desc">Live stream of CPU/memory/network usage per container.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker cp</div><span class="cmd-example">docker cp web:/app/log.txt .</span><p class="cmd-desc">Copy files between a container and the host.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># volumes &amp; networks</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ docker volume ls</div><span class="cmd-example">docker volume ls</span><p class="cmd-desc">List Docker-managed volumes.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker network ls</div><span class="cmd-example">docker network ls</span><p class="cmd-desc">List Docker networks.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker network inspect</div><span class="cmd-example">docker network inspect bridge</span><p class="cmd-desc">Show a network's config and connected containers.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># compose &amp; cleanup</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ docker compose up</div><span class="cmd-example">docker compose up -d</span><p class="cmd-desc">Start all services defined in docker-compose.yml, detached.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker compose down</div><span class="cmd-example">docker compose down</span><p class="cmd-desc">Stop and remove containers/networks created by Compose.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker compose logs</div><span class="cmd-example">docker compose logs -f</span><p class="cmd-desc">Follow log output from all Compose services.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ docker system prune</div><span class="cmd-example">docker system prune -a</span><p class="cmd-desc">Remove unused containers, images, and networks to free space.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <span>© 2026 SULEMAN BUTT</span>
+                        <div>STATUS: ACTIVE | v1.7 </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="kubernetes" class="page">
+            <div class="card">
+                <div class="term-bar">
+                    <span class="term-dot" style="background:#ef4444;"></span>
+                    <span class="term-dot" style="background:#f59e0b;"></span>
+                    <span class="term-dot" style="background:#22c55e;"></span>
+                    <span class="term-title">k8s.sh</span>
+                </div>
+                <div class="card-body">
+                    <div class="eyebrow eyebrow-lg">$ kubectl cheatsheet</div>
+                    <h1 class="title">Kubernetes Essentials<span class="cursor">_</span></h1>
+                    <p class="description">25 kubectl commands for day-to-day cluster work — context switching, workloads, deployments and scaling, services and networking, debugging, and namespaces/secrets.</p>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># cluster &amp; context</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ cluster-info</div><span class="cmd-example">kubectl cluster-info</span><p class="cmd-desc">Show the cluster's control-plane and service endpoints.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ config get-contexts</div><span class="cmd-example">kubectl config get-contexts</span><p class="cmd-desc">List available kubeconfig contexts.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ config use-context</div><span class="cmd-example">kubectl config use-context prod</span><p class="cmd-desc">Switch the active cluster context.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ version</div><span class="cmd-example">kubectl version --short</span><p class="cmd-desc">Show client and server Kubernetes versions.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># workloads</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ get pods</div><span class="cmd-example">kubectl get pods -o wide</span><p class="cmd-desc">List pods in the current namespace.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ describe pod</div><span class="cmd-example">kubectl describe pod web-abc123</span><p class="cmd-desc">Show detailed info and recent events for a pod.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ logs -f</div><span class="cmd-example">kubectl logs -f web-abc123</span><p class="cmd-desc">Stream logs from a pod or container.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ exec -it</div><span class="cmd-example">kubectl exec -it web-abc123 -- sh</span><p class="cmd-desc">Run a command inside a running pod.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ apply -f</div><span class="cmd-example">kubectl apply -f deployment.yaml</span><p class="cmd-desc">Create or update resources from a manifest file.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ delete -f</div><span class="cmd-example">kubectl delete -f deployment.yaml</span><p class="cmd-desc">Delete resources defined in a manifest file.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ rollout status</div><span class="cmd-example">kubectl rollout status deployment/web</span><p class="cmd-desc">Watch the progress of a deployment rollout.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># deployments &amp; scaling</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ get deployments</div><span class="cmd-example">kubectl get deployments</span><p class="cmd-desc">List deployments and their replica status.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ scale</div><span class="cmd-example">kubectl scale deployment/web --replicas=5</span><p class="cmd-desc">Change the replica count of a deployment.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ rollout undo</div><span class="cmd-example">kubectl rollout undo deployment/web</span><p class="cmd-desc">Roll a deployment back to its previous revision.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ set image</div><span class="cmd-example">kubectl set image deployment/web app=web:2.0</span><p class="cmd-desc">Update a deployment's container image and trigger a rollout.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># services &amp; networking</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ get svc</div><span class="cmd-example">kubectl get svc</span><p class="cmd-desc">List services and their cluster/external IPs.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ port-forward</div><span class="cmd-example">kubectl port-forward svc/web 8080:80</span><p class="cmd-desc">Forward a local port to a pod or service.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ get ingress</div><span class="cmd-example">kubectl get ingress</span><p class="cmd-desc">List ingress rules and the hosts they route.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># config &amp; debug</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ get nodes</div><span class="cmd-example">kubectl get nodes -o wide</span><p class="cmd-desc">List cluster nodes and their status.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ top pod</div><span class="cmd-example">kubectl top pod</span><p class="cmd-desc">Show live CPU/memory usage per pod (needs metrics-server).</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ get events</div><span class="cmd-example">kubectl get events --sort-by=.lastTimestamp</span><p class="cmd-desc">Show recent cluster events, most recent last.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ edit</div><span class="cmd-example">kubectl edit deployment/web</span><p class="cmd-desc">Open a live resource in your editor to modify it directly.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># namespaces &amp; secrets</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ get namespaces</div><span class="cmd-example">kubectl get ns</span><p class="cmd-desc">List all namespaces in the cluster.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ create secret</div><span class="cmd-example">kubectl create secret generic db-pass --from-literal=password=xyz</span><p class="cmd-desc">Create a Secret from literal values or files.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ get configmap</div><span class="cmd-example">kubectl get configmap</span><p class="cmd-desc">List ConfigMaps in the current namespace.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <span>© 2026 SULEMAN BUTT</span>
+                        <div>STATUS: ACTIVE | v1.7 </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -362,6 +758,26 @@
                 localStorage.setItem('theme', 'dark');
             }
         });
+
+        // SCROLL-REVEAL for cards (progressive enhancement)
+        if ('IntersectionObserver' in window) {
+            const cards = document.querySelectorAll('.project-card, .cmd-card');
+            cards.forEach((c, i) => {
+                c.style.opacity = '0';
+                c.style.transform = 'translateY(16px)';
+                c.style.transition = `opacity 0.5s ease ${(i % 6) * 0.05}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${(i % 6) * 0.05}s`;
+            });
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            cards.forEach(c => io.observe(c));
+        }
     </script>
 </body>
 </html>
