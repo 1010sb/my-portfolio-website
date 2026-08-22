@@ -117,7 +117,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
-          source: "dist"
+          source: "dist/*"
           target: "/root/landing-page/"
           strip_components: 1
 
