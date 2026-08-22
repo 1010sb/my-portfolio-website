@@ -11,7 +11,7 @@ Personal DevOps portfolio — live at [sulemanb.com](https://sulemanb.com)
 
 ## What This Is
 
-A single-file HTML/CSS/JS portfolio website, automatically deployed to a self-hosted Hetzner VPS on every push to `main` via GitHub Actions.
+A React + TypeScript portfolio website (Vite, Tailwind CSS, react-router), built and automatically deployed to a self-hosted Hetzner VPS on every push to `main` via GitHub Actions.
 
 ---
 
@@ -44,9 +44,10 @@ sulemanb.com
 
 | Layer | Technology | Purpose |
 |---|---|---|
-| Website | HTML / CSS / JS | Single file portfolio |
-| CI/CD | GitHub Actions | Auto-deploy on push |
-| Transfer | SCP (appleboy/scp-action) | Copy file to VPS |
+| Website | React / TypeScript / Vite / Tailwind CSS | Portfolio SPA |
+| Routing | react-router (HashRouter) | Home / About pages |
+| CI/CD | GitHub Actions | Build + auto-deploy on push |
+| Transfer | SCP (appleboy/scp-action) | Copy build output to VPS |
 | Server | Hetzner VPS (Ubuntu) | Hosting |
 | Reverse Proxy | Nginx Proxy Manager | Route traffic, SSL |
 | CDN | Cloudflare | Caching, DDoS protection |
@@ -58,8 +59,10 @@ sulemanb.com
 Every push to `main` triggers the GitHub Actions workflow which:
 
 1. Checks out the repository
-2. Copies `index.html` to `/root/landing-page/` on the VPS via SCP
-3. Nginx Proxy Manager serves the updated file immediately
+2. Installs dependencies and runs `npm run build`
+3. Clears `/root/landing-page/` on the VPS via SSH (old hashed build assets don't linger)
+4. Copies the `dist/` build output to `/root/landing-page/` on the VPS via SCP
+5. Restarts the `portfolio-preview` Docker container so Nginx serves the new build
 
 The workflow uses three GitHub repository secrets:
 
@@ -89,14 +92,42 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy index.html to VPS
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Clean previous deploy on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: rm -rf /root/landing-page/*
+
+      - name: Deploy build to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_KEY }}
-          source: "index.html"
+          source: "dist/*"
           target: "/root/landing-page/"
+          strip_components: 1
+
+      - name: Restart portfolio container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: docker restart portfolio-preview
 ```
 
 ---
@@ -117,10 +148,19 @@ Browser Cache TTL is set to **30 seconds** during active development to minimise
 
 ```
 my-portfolio-website/
-├── index.html                  # Portfolio website
+├── index.html                  # Vite entry HTML
+├── src/
+│   ├── main.tsx                 # React entry point
+│   ├── App.tsx                  # Router setup
+│   ├── index.css                # Tailwind + theme tokens
+│   ├── components/               # Layout, ProjectCard, Footer, ...
+│   ├── pages/                    # Home, About
+│   ├── data/                     # Project content
+│   └── hooks/                    # useTheme
+├── package.json / vite.config.ts / tsconfig*.json
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # GitHub Actions deployment pipeline
+│       └── deploy.yml          # GitHub Actions build + deployment pipeline
 └── README.md
 ```
 
