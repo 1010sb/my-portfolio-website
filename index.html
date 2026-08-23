@@ -213,10 +213,11 @@
             box-shadow: 0 16px 36px -8px color-mix(in srgb, var(--accent) 65%, transparent);
         }
 
-        /* ABOUT SPLIT LAYOUT */
-        .about-split { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; margin: 2.25rem 0; }
+        /* ABOUT SPLIT LAYOUT — single column so it reads top-to-bottom in one pass */
+        .about-split { display: grid; grid-template-columns: 1fr; gap: 2.4rem; margin: 2.25rem 0; }
         .about-col h3 { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 700; margin-bottom: 1.1rem; color: var(--accent); display: flex; align-items: center; gap: 10px; }
         .about-col p { font-size: 1rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 1rem; }
+        .about-col + .about-col { padding-top: 2.2rem; border-top: 1px solid var(--border); }
 
         .stack-list { list-style: none; margin-top: 1rem; }
         .stack-list li {
@@ -234,6 +235,15 @@
             transition: 0.25s;
         }
         .skill-pill:hover { background: color-mix(in srgb, var(--success) 18%, transparent); transform: translateY(-2px); }
+
+        .skill-pill-learning {
+            font-family: 'JetBrains Mono', monospace;
+            background: color-mix(in srgb, var(--warning) 10%, transparent); border: 1px solid color-mix(in srgb, var(--warning) 32%, transparent);
+            color: var(--warning); padding: 7px 16px; border-radius: 8px; font-weight: 600; font-size: 0.83rem;
+            transition: 0.25s;
+        }
+        .skill-pill-learning:hover { background: color-mix(in srgb, var(--warning) 18%, transparent); transform: translateY(-2px); }
+        .skill-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-secondary); margin-top: 1.3rem; display: block; }
 
         /* COMMAND CHEATSHEET PAGES */
         .cmd-category { margin-bottom: 2.25rem; }
@@ -255,6 +265,8 @@
             background: color-mix(in srgb, var(--text-secondary) 8%, transparent); padding: 3px 9px; border-radius: 5px;
         }
         .cmd-desc { font-size: 0.86rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.55rem; }
+        .cmd-scenario { font-size: 0.86rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.6rem; }
+        .cmd-scenario b, .cmd-desc b { color: var(--text-primary); font-weight: 700; }
 
         .footer {
             border-top: 1px solid var(--border); padding-top: 1.6rem; margin-top: 0.5rem;
@@ -263,7 +275,6 @@
         }
 
         @media (max-width: 850px) {
-            .about-split { grid-template-columns: 1fr; }
             body { padding: 1.1rem; }
             .nav-card { padding: 0.5rem 3rem 0.5rem 0.5rem; }
             .nav-link { padding: 7px 10px; font-size: 0.74rem; }
@@ -275,11 +286,12 @@
     <div class="container">
         <div class="nav-card">
             <nav class="nav-links">
-                <a class="nav-link active" data-page="home">~/home</a>
-                <a class="nav-link" data-page="about">~/about</a>
-                <a class="nav-link" data-page="linux">~/linux</a>
-                <a class="nav-link" data-page="docker">~/docker</a>
-                <a class="nav-link" data-page="kubernetes">~/k8s</a>
+                <a class="nav-link active" data-page="home">🏠 ~/home</a>
+                <a class="nav-link" data-page="projects">📦 ~/projects</a>
+                <a class="nav-link" data-page="linux">🐧 ~/linux</a>
+                <a class="nav-link" data-page="docker">🐳 ~/docker</a>
+                <a class="nav-link" data-page="git">🌿 ~/git</a>
+                <a class="nav-link" data-page="kubernetes">☸️ ~/k8s</a>
             </nav>
             <button class="theme-toggle" id="theme-btn">
                 <span id="theme-icon">🌙</span>
@@ -304,119 +316,52 @@
 
                     <div class="eyebrow eyebrow-lg">$ whoami</div>
                     <h1 class="title">QA Engineer → DevOps Engineer<span class="cursor">_</span></h1>
-                    <p class="description">I architect reliable, high-availability systems with a quality-first mindset. Currently, I’m building a series of DevOps projects designed to solve real-world infrastructure challenges. I’m passionate about creating the kind of automated, scalable systems that empower teams to ship better software at high speed.</p>
-
-                    <!-- BEGINNER -->
-                    <div style="margin-bottom:0.5rem;margin-top:0.5rem;">
-                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># beginner</span>
-                    </div>
-                    <div class="projects-grid" style="margin-bottom:1.8rem;">
-                        <div class="project-card" style="border-color: color-mix(in srgb, var(--success) 55%, var(--border));">
-                            <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
-                            <h4>Secure Edge-to-Container Stack</h4>
-                            <p>Hardened Linux server on Hetzner VPS from scratch. Cloudflare CDN with Nginx Reverse Proxy in Docker, UFW firewall, and SSL via Let's Encrypt.</p>
-                            <div class="tech-stack"><span class="tech-tag">VPS</span><span class="tech-tag">Ubuntu</span><span class="tech-tag">Docker</span><span class="tech-tag">Nginx</span><span class="tech-tag">Cloudflare</span></div>
-                            <a href="https://github.com/1010sb/my-portfolio-website" target="_blank" class="project-link">View Project GitHub →</a>
-                        </div>
-
-                        <div class="project-card" style="border-color: color-mix(in srgb, var(--success) 55%, var(--border));">
-                            <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
-                            <h4>Stock Sentiment Analysis</h4>
-                            <p>NLP pipeline analysing 4.1M tweets across 5 stocks (TSLA, NVDA, PLTR, PG, NEE) using FinBERT. Spearman correlation between sentiment and price movement.</p>
-                            <div class="tech-stack"><span class="tech-tag">Python</span><span class="tech-tag">FinBERT</span><span class="tech-tag">NLP</span><span class="tech-tag">Pandas</span><span class="tech-tag">Data Science</span></div>
-                            <a href="https://github.com/1010sb/StockSentimentAnalysis" target="_blank" class="project-link">View Project GitHub →</a>
-                        </div>
-                    </div>
-
-                    <!-- INTERMEDIATE -->
-                    <div style="margin-bottom:0.5rem;">
-                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># intermediate</span>
-                    </div>
-                    <div class="projects-grid" style="margin-bottom:1.8rem;">
-                        <div class="project-card">
-                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
-                            <h4>CI/CD Pipeline Automation</h4>
-                            <p>End-to-end automated pipeline with integrated security scanning and artifact management deploying to the VPS on every push.</p>
-                            <div class="tech-stack"><span class="tech-tag">GitHub Actions</span><span class="tech-tag">Docker</span><span class="tech-tag">SonarQube</span></div>
-                        </div>
-
-                        <div class="project-card">
-                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
-                            <h4>Cloud Infrastructure as Code</h4>
-                            <p>Modular infrastructure templates for GCP with automated provisioning. Reproducible environments managed entirely through code.</p>
-                            <div class="tech-stack"><span class="tech-tag">Terraform</span><span class="tech-tag">Ansible</span><span class="tech-tag">GCP</span></div>
-                        </div>
-                    </div>
-
-                    <!-- ADVANCED -->
-                    <div style="margin-bottom:0.5rem;">
-                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># advanced</span>
-                    </div>
-                    <div class="projects-grid" style="margin-bottom:2.75rem;">
-                        <div class="project-card">
-                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
-                            <h4>Kubernetes GitOps Platform</h4>
-                            <p>Fully automated GitOps deployments with service mesh and Prometheus monitoring on GCP GKE. Infrastructure and application state managed via Git.</p>
-                            <div class="tech-stack"><span class="tech-tag">Kubernetes</span><span class="tech-tag">ArgoCD</span><span class="tech-tag">Helm</span><span class="tech-tag">Prometheus</span><span class="tech-tag">GCP GKE</span></div>
-                        </div>
-                    </div>
+                    <p class="description">I architect reliable, high-availability systems with a quality-first mindset. Currently, I'm building a series of DevOps projects designed to solve real-world infrastructure challenges. I'm passionate about creating the kind of automated, scalable systems that empower teams to ship better software at high speed.</p>
 
                     <div class="cta-group">
-                        <a href="https://www.linkedin.com/in/suleman-butt" target="_blank" class="btn-primary">Connect on LinkedIn →</a>
+                        <a href="#" class="btn-primary nav-link" data-page="projects">View Projects →</a>
                     </div>
-
-                    <div class="footer">
-                        <div>© 2026 SULEMAN BUTT</div>
-                        <div>STATUS: ACTIVE | v1.7 </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="about" class="page">
-            <div class="card">
-                <div class="term-bar">
-                    <span class="term-dot" style="background:#ef4444;"></span>
-                    <span class="term-dot" style="background:#f59e0b;"></span>
-                    <span class="term-dot" style="background:#22c55e;"></span>
-                    <span class="term-title">about.md</span>
-                </div>
-                <div class="card-body">
-                    <div class="eyebrow eyebrow-lg">$ cat about.md</div>
-                    <h1 class="title">Professional Profile<span class="cursor">_</span></h1>
-                    <p class="description">Leveraging my roots in Quality Assurance to build the next generation of High-Performance, Automated Cloud Infrastructure.</p>
 
                     <div class="about-split">
                         <div class="about-col">
                             <h3><span>💼</span> Professional Experience</h3>
-                            <p>Working as a <b>QA Engineer at Rossmann</b> since 2023. I ensure the resilience of the POS Eco-System and mission-critical retail infrastructure.</p>
+                            <p>I've been a <b>QA Engineer at Rossmann</b> since 2023, on a cross-functional team that plans work in Kanban and Jira. Day to day, I test the <b>POS Eco-System</b>, backend APIs, and integration services running on GKE — a mix of manual testing and automation testing with <b>Eggplant (Keysight)</b>. Alongside that, I handle ad-hoc Linux server tasks, help coordinate release and update planning, and regularly weigh in on infrastructure and tooling decisions for the team.</p>
+                            <p>Being this close to the infrastructure — not just the software running on top of it — is what pulled me toward DevOps: I want to move from verifying systems to building and operating them myself.</p>
                             <ul class="stack-list">
-                                <li>Workplace Infrastructure <span>Active</span></li>
-                                <li>Linux Systems Administration <span>✓</span></li>
-                                <li>Google Cloud Platform <span>✓</span></li>
-                                <li>Datadog Observability <span>✓</span></li>
+                                <li>QA Engineering (POS / Backend APIs / GKE) <span>Active</span></li>
+                                <li>Automation Testing (Eggplant / Keysight) <span>Active</span></li>
+                                <li>Release & Update Planning <span>Active</span></li>
+                                <li>Ad-hoc Linux Server Tasks <span>Active</span></li>
+                                <li>Infrastructure & Tooling Input <span>Active</span></li>
+                                <li>Google Cloud Platform (consumer) <span>Active</span></li>
+                                <li>Datadog Observability (dashboards) <span>Active</span></li>
                             </ul>
                         </div>
 
                         <div class="about-col">
                             <h3><span>🎓</span> Academic Journey</h3>
-                            <p>Currently pursuing an <b>M.Sc. DevOps & Cloud</b>. My research and studies focus on scalable, secure, and automated delivery lifecycles.</p>
+                            <p>B.Sc. in <b>Data Science</b> completed. That same hands-on exposure to Linux and GKE infrastructure in my QA role is what pushed me to pursue an <b>M.Sc. in DevOps & Cloud Computing</b> at IU International University, graduating May 2027 — a deliberate, structured path to turn infrastructure curiosity into formal skills in CI/CD, IaC, and container orchestration.</p>
                             <ul class="stack-list">
-                                <li>Study & Research <span>Focus</span></li>
-                                <li>Python Scripting <span>✓</span></li>
-                                <li>Terraform (IaC) <span>Learning</span></li>
-                                <li>GitHub Actions & CI/CD <span>Learning</span></li>
-                                <li>Docker & Kubernetes <span>Learning</span></li>
+                                <li>B.Sc. Data Science <span>✓ Completed</span></li>
+                                <li>M.Sc. DevOps & Cloud Computing <span>In Progress</span></li>
+                                <li>ISTQB Foundation <span>✓ Achieved</span></li>
+                                <li>ISAQB Foundation <span>Sep 2026</span></li>
+                                <li>GCP Associate Cloud Engineer <span>Planned</span></li>
                             </ul>
                         </div>
                     </div>
 
                     <h3 style="font-family:'JetBrains Mono', monospace; font-size:1.05rem; margin-top: 2.75rem;">Global Skill Stack</h3>
+                    <span class="skill-group-label" style="margin-top: 0.4rem;">hands-on</span>
                     <div class="skills-grid-clean">
-                        <div class="skill-pill">Linux</div><div class="skill-pill">Python</div><div class="skill-pill">GCP</div>
-                        <div class="skill-pill">Docker</div><div class="skill-pill">Kubernetes</div><div class="skill-pill">Git</div>
-                        <div class="skill-pill">GitHub Action</div><div class="skill-pill">CI CD</div><div class="skill-pill">Terraform</div>
-                        <div class="skill-pill">Datadog</div>
+                        <div class="skill-pill">Linux</div><div class="skill-pill">Docker</div><div class="skill-pill">Git</div>
+                        <div class="skill-pill">Python</div><div class="skill-pill">SQL</div><div class="skill-pill">GCP (consumer)</div>
+                        <div class="skill-pill">Datadog</div><div class="skill-pill">Jira</div><div class="skill-pill">Eggplant / Keysight</div>
+                    </div>
+                    <span class="skill-group-label">currently learning — M.Sc. DevOps & Cloud Computing</span>
+                    <div class="skills-grid-clean">
+                        <div class="skill-pill-learning">Kubernetes</div><div class="skill-pill-learning">Terraform</div>
+                        <div class="skill-pill-learning">GitLab CI</div><div class="skill-pill-learning">CI/CD Pipelines</div>
                     </div>
 
                     <div class="eyebrow eyebrow-lg" style="margin-top: 3.25rem;">$ contact --show</div>
@@ -425,18 +370,109 @@
                         <div class="project-card" style="text-align: center;">
                             <div style="font-size: 1.8rem; margin-bottom: 0.9rem;">💼</div>
                             <h4>LinkedIn</h4>
-                            <a href="https://www.linkedin.com/in/suleman-butt" class="project-link" style="margin: 0 auto;">Visit Profile →</a>
+                            <a href="https://www.linkedin.com/in/suleman-butt" target="_blank" class="project-link" style="margin: 0 auto;">Visit Profile →</a>
                         </div>
                         <div class="project-card" style="text-align: center;">
                             <div style="font-size: 1.8rem; margin-bottom: 0.9rem;">📧</div>
                             <h4>Email</h4>
-                            <a href="mailto:sahamd.ent@gmail.com" class="project-link" style="margin: 0 auto;">Send Email →</a>
+                            <a href="mailto:sahmad.ent@gmail.com" class="project-link" style="margin: 0 auto;">Send Email →</a>
+                        </div>
+                    </div>
+
+                    <div class="footer" style="margin-top: 2.75rem;">
+                        <div>© 2026 SULEMAN BUTT</div>
+                        <div>STATUS: ACTIVE | v1.8 </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="projects" class="page">
+            <div class="card">
+                <div class="term-bar">
+                    <span class="term-dot" style="background:#ef4444;"></span>
+                    <span class="term-dot" style="background:#f59e0b;"></span>
+                    <span class="term-dot" style="background:#22c55e;"></span>
+                    <span class="term-title">projects.sh</span>
+                </div>
+                <div class="card-body">
+                    <div class="eyebrow eyebrow-lg">$ ls -la ~/projects</div>
+                    <h1 class="title">📦 Projects<span class="cursor">_</span></h1>
+                    <p class="description">A mix of shipped work and an active 12-month roadmap. Each project links to its GitHub repo where the code and setup are documented in full.</p>
+
+                    <!-- BEGINNER -->
+                    <div style="margin-bottom:0.5rem;margin-top:0.5rem;">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># shipped</span>
+                    </div>
+                    <div class="projects-grid" style="margin-bottom:1.8rem;">
+                        <div class="project-card" style="border-color: color-mix(in srgb, var(--success) 55%, var(--border));">
+                            <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
+                            <h4>Secure Edge-to-Container Stack</h4>
+                            <p>Hardened a Hetzner VPS from scratch: SSH key auth, UFW firewall, and Docker running Nginx as a reverse proxy in front of the app, fronted by Cloudflare CDN with SSL via Let's Encrypt. This same stack now hosts this portfolio site.</p>
+                            <div class="tech-stack"><span class="tech-tag">VPS</span><span class="tech-tag">Ubuntu</span><span class="tech-tag">Docker</span><span class="tech-tag">Nginx</span><span class="tech-tag">Cloudflare</span></div>
+                            <a href="https://github.com/1010sb/devops-vps-ci-cd" target="_blank" class="project-link">View Project GitHub →</a>
+                        </div>
+
+                        <div class="project-card" style="border-color: color-mix(in srgb, var(--success) 55%, var(--border));">
+                            <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
+                            <h4>Portfolio CI/CD to VPS</h4>
+                            <p>This website itself: a GitHub Actions workflow that SCPs index.html straight to the VPS on every push to main, using repo secrets for the SSH key — no manual deploys.</p>
+                            <div class="tech-stack"><span class="tech-tag">GitHub Actions</span><span class="tech-tag">SCP</span><span class="tech-tag">VPS</span></div>
+                            <a href="https://github.com/1010sb/my-portfolio-website" target="_blank" class="project-link">View Project GitHub →</a>
+                        </div>
+
+                        <div class="project-card" style="border-color: color-mix(in srgb, var(--success) 55%, var(--border));">
+                            <div class="project-status completed"><div class="status-indicator"></div>Completed</div>
+                            <h4>Stock Sentiment Analysis</h4>
+                            <p>NLP pipeline analysing 4.1M tweets across 5 stocks (TSLA, NVDA, PLTR, PG, NEE) using FinBERT. Correlated sentiment scores against price movement with Spearman correlation. From my B.Sc. Data Science work.</p>
+                            <div class="tech-stack"><span class="tech-tag">Python</span><span class="tech-tag">FinBERT</span><span class="tech-tag">NLP</span><span class="tech-tag">Pandas</span><span class="tech-tag">Data Science</span></div>
+                            <a href="https://github.com/1010sb/StockSentimentAnalysis" target="_blank" class="project-link">View Project GitHub →</a>
+                        </div>
+                    </div>
+
+                    <!-- INTERMEDIATE -->
+                    <div style="margin-bottom:0.5rem;">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># in progress / next up</span>
+                    </div>
+                    <div class="projects-grid" style="margin-bottom:1.8rem;">
+                        <div class="project-card">
+                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
+                            <h4>First Hand-Written Dockerfile</h4>
+                            <p>Containerising a B.Sc. Python project from scratch — writing the Dockerfile, not just pulling images. First real step past tutorial-level Docker usage.</p>
+                            <div class="tech-stack"><span class="tech-tag">Docker</span><span class="tech-tag">Python</span></div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
+                            <h4>CI/CD Pipeline Automation</h4>
+                            <p>End-to-end automated pipeline with integrated security scanning and artifact management, extending the existing deploy workflow with real build/test stages.</p>
+                            <div class="tech-stack"><span class="tech-tag">GitHub Actions</span><span class="tech-tag">Docker</span><span class="tech-tag">SonarQube</span></div>
+                        </div>
+
+                        <div class="project-card">
+                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
+                            <h4>Cloud Infrastructure as Code</h4>
+                            <p>Provisioning a real GCP resource with Terraform — modular, reproducible infrastructure managed entirely through code instead of the console.</p>
+                            <div class="tech-stack"><span class="tech-tag">Terraform</span><span class="tech-tag">GCP</span></div>
+                        </div>
+                    </div>
+
+                    <!-- ADVANCED -->
+                    <div style="margin-bottom:0.5rem;">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># advanced / long-term</span>
+                    </div>
+                    <div class="projects-grid" style="margin-bottom:0;">
+                        <div class="project-card">
+                            <div class="project-status"><div class="status-indicator blink"></div>Coming Soon</div>
+                            <h4>Kubernetes GitOps Platform</h4>
+                            <p>Fully automated GitOps deployments with service mesh and Prometheus monitoring on GCP GKE. Infrastructure and application state managed via Git.</p>
+                            <div class="tech-stack"><span class="tech-tag">Kubernetes</span><span class="tech-tag">ArgoCD</span><span class="tech-tag">Helm</span><span class="tech-tag">Prometheus</span><span class="tech-tag">GCP GKE</span></div>
                         </div>
                     </div>
 
                     <div class="footer" style="margin-top: 2.75rem;">
                         <span>© 2026 SULEMAN BUTT</span>
-                        <div>STATUS: ACTIVE | v1.7 </div>
+                        <div>STATUS: ACTIVE | v1.8 </div>
                     </div>
                 </div>
             </div>
@@ -452,110 +488,80 @@
                 </div>
                 <div class="card-body">
                     <div class="eyebrow eyebrow-lg">$ man linux-essentials</div>
-                    <h1 class="title">Linux Commands for DevOps<span class="cursor">_</span></h1>
-                    <p class="description">50 commands I reach for constantly — process and system inspection, disk and files, networking, permissions, text processing, package management, shell environment, and automation.</p>
+                    <h1 class="title">🐧 Linux Commands for DevOps<span class="cursor">_</span></h1>
+                    <p class="description">30 hand-picked commands, each tied to a real scenario — not just what the flag does, but why you'd reach for it and what result to expect on screen.</p>
 
                     <div class="cmd-category">
                         <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># system &amp; process</span>
                         <div class="cmd-grid">
-                            <div class="cmd-card"><div class="cmd-name">$ top</div><span class="cmd-example">top</span><p class="cmd-desc">Real-time view of running processes and resource usage.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ htop</div><span class="cmd-example">htop</span><p class="cmd-desc">Interactive, color process viewer — a friendlier top.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ ps aux</div><span class="cmd-example">ps aux | grep nginx</span><p class="cmd-desc">List all running processes with full details.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ kill -9</div><span class="cmd-example">kill -9 1234</span><p class="cmd-desc">Force-terminate a process by its PID.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ pkill</div><span class="cmd-example">pkill -f node</span><p class="cmd-desc">Kill process(es) by name instead of PID.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ systemctl</div><span class="cmd-example">systemctl status nginx</span><p class="cmd-desc">Start, stop, restart, or check a systemd-managed service.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ journalctl -xe</div><span class="cmd-example">journalctl -xe</span><p class="cmd-desc">Inspect recent system logs with extra diagnostic context.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ uptime</div><span class="cmd-example">uptime</span><p class="cmd-desc">Show how long the system has been up and its load average.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ top</div><span class="cmd-example">top</span><p class="cmd-scenario"><b>Scenario:</b> A server feels sluggish and you need to know why right now.</p><p class="cmd-desc"><b>Result:</b> A live, refreshing table of every process ranked by CPU/memory — the runaway process is usually sitting at the top.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ps aux --sort=-%mem</div><span class="cmd-example">ps aux --sort=-%mem | head</span><p class="cmd-scenario"><b>Scenario:</b> You want a one-shot snapshot of memory hogs to paste into a ticket, not a live dashboard.</p><p class="cmd-desc"><b>Result:</b> Every process on the system, sorted highest memory first — the <code>--sort</code> flag is the useful part most people miss.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ kill -9</div><span class="cmd-example">kill -9 1234</span><p class="cmd-scenario"><b>Scenario:</b> A process is hung and ignoring a normal <code>kill</code>/Ctrl+C.</p><p class="cmd-desc"><b>Result:</b> SIGKILL terminates it immediately, no cleanup — last resort, since the app can't close files or flush data first.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ pkill -f</div><span class="cmd-example">pkill -f "node server.js"</span><p class="cmd-scenario"><b>Scenario:</b> You need to kill a process by name because you don't know (or don't want to look up) its PID.</p><p class="cmd-desc"><b>Result:</b> Matches the full command line via <code>-f</code> and kills every matching process — handy after a bad deploy leaves zombie workers.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ systemctl status</div><span class="cmd-example">systemctl status nginx</span><p class="cmd-scenario"><b>Scenario:</b> A site is down and you need to know if the service is even running before debugging further.</p><p class="cmd-desc"><b>Result:</b> Shows active/failed state, the PID, recent log lines, and enabled-on-boot status in one screen.</p></div>
                         </div>
                     </div>
 
                     <div class="cmd-category">
                         <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># disk &amp; files</span>
                         <div class="cmd-grid">
-                            <div class="cmd-card"><div class="cmd-name">$ df -h</div><span class="cmd-example">df -h</span><p class="cmd-desc">Show disk space usage in human-readable form.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ du -sh</div><span class="cmd-example">du -sh /var/log</span><p class="cmd-desc">Show the total size of a directory.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ find</div><span class="cmd-example">find / -name "*.log"</span><p class="cmd-desc">Search the filesystem for files matching a pattern.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ tar -czvf</div><span class="cmd-example">tar -czvf backup.tar.gz ./app</span><p class="cmd-desc">Create a compressed tar archive.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ rsync -avz</div><span class="cmd-example">rsync -avz ./app user@host:/srv</span><p class="cmd-desc">Efficiently sync files and directories, locally or remote.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ lsof</div><span class="cmd-example">lsof -i :8080</span><p class="cmd-desc">List open files and which process is using a given port.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ mount</div><span class="cmd-example">mount /dev/sdb1 /mnt/data</span><p class="cmd-desc">Attach a filesystem or device to a directory.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ ln -s</div><span class="cmd-example">ln -s /opt/app/current /opt/app/live</span><p class="cmd-desc">Create a symbolic link to a file or directory.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ df -h</div><span class="cmd-example">df -h</span><p class="cmd-scenario"><b>Scenario:</b> Deploys are failing with cryptic "no space left on device" errors.</p><p class="cmd-desc"><b>Result:</b> Disk usage per mounted filesystem in human-readable GB/MB (not raw block counts) — instantly shows which partition is full.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ du -sh</div><span class="cmd-example">du -sh /var/log/* | sort -rh | head</span><p class="cmd-scenario"><b>Scenario:</b> <code>df</code> says the disk is full — now you need to find which directory is actually eating the space.</p><p class="cmd-desc"><b>Result:</b> Total size per item, human-readable; piped through <code>sort -rh</code> the biggest offender lands right at the top.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ find -mtime</div><span class="cmd-example">find /var/log -name "*.log" -mtime +30</span><p class="cmd-scenario"><b>Scenario:</b> You need to clean up log files older than a month without deleting anything recent by accident.</p><p class="cmd-desc"><b>Result:</b> Lists every matching file untouched in 30+ days — verify the list, then re-run with <code>-delete</code> to actually remove them.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ tar -czvf</div><span class="cmd-example">tar -czvf backup.tar.gz ./app</span><p class="cmd-scenario"><b>Scenario:</b> You need one portable file to move or archive an entire app directory before a risky change.</p><p class="cmd-desc"><b>Result:</b> A single gzip-compressed archive; <code>-v</code> prints each file as it's added so you can confirm nothing was skipped.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ rsync -avz</div><span class="cmd-example">rsync -avz --delete ./app/ user@host:/srv/app/</span><p class="cmd-scenario"><b>Scenario:</b> Deploying an updated app directory to a remote server without re-uploading every file each time.</p><p class="cmd-desc"><b>Result:</b> Only changed files transfer (fast re-runs); <code>--delete</code> also removes files on the remote that no longer exist locally, keeping both sides in sync.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ lsof -i</div><span class="cmd-example">lsof -i :8080</span><p class="cmd-scenario"><b>Scenario:</b> "Address already in use" when starting a service — something else already has the port.</p><p class="cmd-desc"><b>Result:</b> Prints the exact process name and PID bound to port 8080, so you can decide to kill it or pick another port.</p></div>
                         </div>
                     </div>
 
                     <div class="cmd-category">
                         <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># networking</span>
                         <div class="cmd-grid">
-                            <div class="cmd-card"><div class="cmd-name">$ ss -tulpn</div><span class="cmd-example">ss -tulpn</span><p class="cmd-desc">Show listening ports and the processes bound to them.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ curl -I</div><span class="cmd-example">curl -I https://example.com</span><p class="cmd-desc">Fetch HTTP headers to check a service is responding.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ ping</div><span class="cmd-example">ping -c 4 8.8.8.8</span><p class="cmd-desc">Test basic connectivity to a host.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ traceroute</div><span class="cmd-example">traceroute example.com</span><p class="cmd-desc">Trace the network path packets take to a host.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ ssh</div><span class="cmd-example">ssh user@server</span><p class="cmd-desc">Open a secure shell session on a remote host.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ scp</div><span class="cmd-example">scp app.tar.gz user@server:/opt</span><p class="cmd-desc">Copy files securely to or from a remote host over SSH.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ dig</div><span class="cmd-example">dig example.com +short</span><p class="cmd-desc">Query DNS records for a domain.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ wget</div><span class="cmd-example">wget https://example.com/file.tar.gz</span><p class="cmd-desc">Download a file over HTTP/HTTPS/FTP.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ss -tulpn</div><span class="cmd-example">ss -tulpn</span><p class="cmd-scenario"><b>Scenario:</b> You just deployed a service and need to confirm it's actually listening before testing externally.</p><p class="cmd-desc"><b>Result:</b> Every TCP/UDP port currently listening, with the owning process name and PID — the modern, faster replacement for <code>netstat</code>.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ curl -I</div><span class="cmd-example">curl -I https://example.com</span><p class="cmd-scenario"><b>Scenario:</b> A service should be up — you want to check the HTTP status without downloading the whole page.</p><p class="cmd-desc"><b>Result:</b> Just the response headers (status code, server, content-type) — a 200 confirms it's alive, a 502/timeout tells you where to dig next.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ping -c</div><span class="cmd-example">ping -c 4 8.8.8.8</span><p class="cmd-scenario"><b>Scenario:</b> A server can't reach the internet or another host — is it DNS, routing, or the network entirely?</p><p class="cmd-desc"><b>Result:</b> 4 ICMP replies with latency; <code>-c</code> stops it automatically instead of pinging forever. No reply at all usually means a firewall or routing issue.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ssh -i</div><span class="cmd-example">ssh -i ~/.ssh/id_ed25519 deploy@203.0.113.5</span><p class="cmd-scenario"><b>Scenario:</b> Connecting to a fresh VPS that only accepts key-based auth, not passwords.</p><p class="cmd-desc"><b>Result:</b> Opens an authenticated remote shell using the specified private key — the flag to know when the server has multiple keys configured.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ scp -r</div><span class="cmd-example">scp -r ./dist user@server:/var/www/app</span><p class="cmd-scenario"><b>Scenario:</b> You need to copy a whole build folder to a server without setting up rsync.</p><p class="cmd-desc"><b>Result:</b> Recursively copies the directory and its contents over SSH, encrypted in transit, landing at the given remote path.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ dig +short</div><span class="cmd-example">dig example.com +short</span><p class="cmd-scenario"><b>Scenario:</b> DNS was just changed (new A record, Cloudflare proxy) and you need to verify it propagated.</p><p class="cmd-desc"><b>Result:</b> Just the resolved IP address(es), no verbose DNS trace noise — quick to eyeball or script against.</p></div>
                         </div>
                     </div>
 
                     <div class="cmd-category">
                         <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># permissions &amp; users</span>
                         <div class="cmd-grid">
-                            <div class="cmd-card"><div class="cmd-name">$ chmod</div><span class="cmd-example">chmod 755 deploy.sh</span><p class="cmd-desc">Change a file's read/write/execute permissions.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ chown</div><span class="cmd-example">chown www-data:www-data /var/www</span><p class="cmd-desc">Change a file's owning user and group.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ sudo</div><span class="cmd-example">sudo systemctl restart nginx</span><p class="cmd-desc">Run a single command with elevated privileges.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ whoami</div><span class="cmd-example">whoami</span><p class="cmd-desc">Show the currently logged-in user.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ useradd</div><span class="cmd-example">useradd -m -s /bin/bash deploy</span><p class="cmd-desc">Create a new system user with a home directory and shell.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ passwd</div><span class="cmd-example">passwd deploy</span><p class="cmd-desc">Set or change a user's password.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ ls -alh</div><span class="cmd-example">ls -alh /etc/nginx</span><p class="cmd-scenario"><b>Scenario:</b> Nginx won't start and you suspect a permissions or ownership problem in its config directory.</p><p class="cmd-desc"><b>Result:</b> Every entry including hidden dotfiles (<code>-a</code>), in long format showing owner/group/permissions (<code>-l</code>), with sizes in human-readable K/M/G (<code>-h</code>) instead of raw bytes.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ chmod 755</div><span class="cmd-example">chmod 755 deploy.sh</span><p class="cmd-scenario"><b>Scenario:</b> A deploy script fails with "permission denied" when you try to run it.</p><p class="cmd-desc"><b>Result:</b> Owner gets read/write/execute, group and others get read/execute — the standard mode for a script everyone should be able to run but only you edit.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ chown -R</div><span class="cmd-example">chown -R www-data:www-data /var/www/app</span><p class="cmd-scenario"><b>Scenario:</b> Nginx (running as <code>www-data</code>) can't read files you just uploaded as root.</p><p class="cmd-desc"><b>Result:</b> Recursively hands ownership of the whole directory tree to the <code>www-data</code> user and group so the web server can serve it.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ sudo -u</div><span class="cmd-example">sudo -u postgres psql</span><p class="cmd-scenario"><b>Scenario:</b> You need to run a command as a specific service account (e.g. the DB user), not as root.</p><p class="cmd-desc"><b>Result:</b> Runs the command with that user's identity and environment — safer than switching to root for a task that only needs one user's privileges.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ useradd -m -s</div><span class="cmd-example">useradd -m -s /bin/bash deploy</span><p class="cmd-scenario"><b>Scenario:</b> Setting up a new VPS and you don't want to keep working as root.</p><p class="cmd-desc"><b>Result:</b> Creates a user with a home directory (<code>-m</code>) and bash as the login shell (<code>-s</code>) — ready for SSH key setup and sudo access.</p></div>
                         </div>
                     </div>
 
                     <div class="cmd-category">
-                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># text &amp; search</span>
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># text processing &amp; search</span>
                         <div class="cmd-grid">
-                            <div class="cmd-card"><div class="cmd-name">$ grep -r</div><span class="cmd-example">grep -r "ERROR" /var/log</span><p class="cmd-desc">Recursively search file contents for a pattern.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ awk</div><span class="cmd-example">awk '{print $1}' access.log</span><p class="cmd-desc">Extract and process columns of text.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ sed -i</div><span class="cmd-example">sed -i 's/DEBUG/INFO/' config.yml</span><p class="cmd-desc">Find and replace text in a file in place.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ tail -f</div><span class="cmd-example">tail -f /var/log/syslog</span><p class="cmd-desc">Follow a log file in real time as it's written.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ cat</div><span class="cmd-example">cat /etc/os-release</span><p class="cmd-desc">Print a file's contents to standard output.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ less</div><span class="cmd-example">less /var/log/syslog</span><p class="cmd-desc">Page through a file's contents interactively.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ wc -l</div><span class="cmd-example">wc -l access.log</span><p class="cmd-desc">Count lines, words, or bytes in a file.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ grep -rn</div><span class="cmd-example">grep -rn "ERROR" /var/log/app</span><p class="cmd-scenario"><b>Scenario:</b> Something failed overnight and you need every occurrence of an error across a whole log directory.</p><p class="cmd-desc"><b>Result:</b> Every matching line recursively (<code>-r</code>) across all files, prefixed with the line number (<code>-n</code>) so you can jump straight to it.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ awk '{print}'</div><span class="cmd-example">awk '{print $1, $9}' access.log</span><p class="cmd-scenario"><b>Scenario:</b> An access log has 12 columns and you only care about the IP and status code.</p><p class="cmd-desc"><b>Result:</b> Prints just the chosen whitespace-delimited columns per line — far faster than eyeballing full log lines.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ sed -i</div><span class="cmd-example">sed -i 's/DEBUG/INFO/g' config.yml</span><p class="cmd-scenario"><b>Scenario:</b> A config file was accidentally deployed with debug logging left on.</p><p class="cmd-desc"><b>Result:</b> Replaces every occurrence in place (<code>-i</code> writes the file directly) — no need to open an editor for a one-line fix.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ tail -f</div><span class="cmd-example">tail -f -n 100 /var/log/syslog</span><p class="cmd-scenario"><b>Scenario:</b> You just restarted a service and want to watch what happens as it starts.</p><p class="cmd-desc"><b>Result:</b> Prints the last 100 lines then keeps streaming new ones live — <code>Ctrl+C</code> to stop following.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ wc -l</div><span class="cmd-example">grep "ERROR" app.log | wc -l</span><p class="cmd-scenario"><b>Scenario:</b> You want to know how many errors happened today, not read them all.</p><p class="cmd-desc"><b>Result:</b> A single number — the line count from whatever was piped in — great for quick sanity checks or scripting alerts.</p></div>
                         </div>
                     </div>
 
                     <div class="cmd-category">
-                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># automation &amp; scheduling</span>
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># automation &amp; environment</span>
                         <div class="cmd-grid">
-                            <div class="cmd-card"><div class="cmd-name">$ crontab -e</div><span class="cmd-example">crontab -e</span><p class="cmd-desc">Edit scheduled cron jobs for the current user.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ nohup</div><span class="cmd-example">nohup ./deploy.sh &amp;</span><p class="cmd-desc">Run a command immune to hangups after logout.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ alias</div><span class="cmd-example">alias ll='ls -la'</span><p class="cmd-desc">Create a shortcut for a longer command.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ xargs</div><span class="cmd-example">find . -name "*.tmp" | xargs rm</span><p class="cmd-desc">Build and run commands from piped input.</p></div>
-                        </div>
-                    </div>
-
-                    <div class="cmd-category">
-                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># package management</span>
-                        <div class="cmd-grid">
-                            <div class="cmd-card"><div class="cmd-name">$ apt update</div><span class="cmd-example">sudo apt update && sudo apt upgrade -y</span><p class="cmd-desc">Refresh package lists and upgrade installed packages.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ apt install</div><span class="cmd-example">sudo apt install nginx</span><p class="cmd-desc">Install a package on Debian/Ubuntu systems.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ dpkg -l</div><span class="cmd-example">dpkg -l | grep docker</span><p class="cmd-desc">List all installed packages on the system.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ which</div><span class="cmd-example">which python3</span><p class="cmd-desc">Show the full path of a command's executable.</p></div>
-                        </div>
-                    </div>
-
-                    <div class="cmd-category">
-                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># environment &amp; shell</span>
-                        <div class="cmd-grid">
-                            <div class="cmd-card"><div class="cmd-name">$ env</div><span class="cmd-example">env | grep PATH</span><p class="cmd-desc">Print all current environment variables.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ export</div><span class="cmd-example">export NODE_ENV=production</span><p class="cmd-desc">Set an environment variable for the current shell session.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ history</div><span class="cmd-example">history | grep docker</span><p class="cmd-desc">Show previously run shell commands.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ uname -a</div><span class="cmd-example">uname -a</span><p class="cmd-desc">Print kernel name, version, and system architecture.</p></div>
-                            <div class="cmd-card"><div class="cmd-name">$ source</div><span class="cmd-example">source ~/.bashrc</span><p class="cmd-desc">Reload a shell script or config into the current session.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ crontab -e</div><span class="cmd-example">crontab -e</span><p class="cmd-scenario"><b>Scenario:</b> A backup or cleanup script needs to run automatically every night without you SSHing in manually.</p><p class="cmd-desc"><b>Result:</b> Opens the current user's cron table in an editor — add a line like <code>0 2 * * * /opt/backup.sh</code> and it runs at 2am daily.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ nohup ... &amp;</div><span class="cmd-example">nohup ./long-job.sh &gt; out.log 2&gt;&amp;1 &amp;</span><p class="cmd-scenario"><b>Scenario:</b> You start a long-running script over SSH but need to log off before it finishes.</p><p class="cmd-desc"><b>Result:</b> The process keeps running after the SSH session ends (immune to hangup signals); output is redirected to a file instead of vanishing with the terminal.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ xargs</div><span class="cmd-example">find . -name "*.tmp" | xargs rm -f</span><p class="cmd-scenario"><b>Scenario:</b> You found a list of files to delete with <code>find</code>, but <code>find ... -delete</code> isn't flexible enough for the cleanup command you need.</p><p class="cmd-desc"><b>Result:</b> Takes each line from stdin and appends it as an argument to the given command — turns a list of paths into one batch <code>rm</code> call.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ history | grep</div><span class="cmd-example">history | grep docker</span><p class="cmd-scenario"><b>Scenario:</b> You ran a complex command last week and can't remember the exact flags.</p><p class="cmd-desc"><b>Result:</b> Every past shell command containing "docker", with its history number — rerun one instantly with <code>!&lt;number&gt;</code>.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ env</div><span class="cmd-example">env | grep -i path</span><p class="cmd-scenario"><b>Scenario:</b> A script works locally but fails on the server with "command not found" — likely a PATH or missing env var issue.</p><p class="cmd-desc"><b>Result:</b> Lists every environment variable currently set in the shell, letting you confirm PATH, NODE_ENV, or similar are what the app expects.</p></div>
                         </div>
                     </div>
 
                     <div class="footer">
                         <span>© 2026 SULEMAN BUTT</span>
-                        <div>STATUS: ACTIVE | v1.7 </div>
+                        <div>STATUS: ACTIVE | v1.8 </div>
                     </div>
                 </div>
             </div>
@@ -571,7 +577,7 @@
                 </div>
                 <div class="card-body">
                     <div class="eyebrow eyebrow-lg">$ docker --help</div>
-                    <h1 class="title">Docker Essentials<span class="cursor">_</span></h1>
+                    <h1 class="title">🐳 Docker Essentials<span class="cursor">_</span></h1>
                     <p class="description">25 commands covering the day-to-day Docker workflow — building and managing images, running and debugging containers, volumes and networks, and Compose.</p>
 
                     <div class="cmd-category">
@@ -631,7 +637,88 @@
 
                     <div class="footer">
                         <span>© 2026 SULEMAN BUTT</span>
-                        <div>STATUS: ACTIVE | v1.7 </div>
+                        <div>STATUS: ACTIVE | v1.8 </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="git" class="page">
+            <div class="card">
+                <div class="term-bar">
+                    <span class="term-dot" style="background:#ef4444;"></span>
+                    <span class="term-dot" style="background:#f59e0b;"></span>
+                    <span class="term-dot" style="background:#22c55e;"></span>
+                    <span class="term-title">git.sh</span>
+                </div>
+                <div class="card-body">
+                    <div class="eyebrow eyebrow-lg">$ git --help</div>
+                    <h1 class="title">🌿 Git Essentials<span class="cursor">_</span></h1>
+                    <p class="description">24 commands covering the daily Git workflow — setup, the local commit cycle, branching and merging, working with remotes, inspecting history, and undoing mistakes safely.</p>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># setup &amp; config</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ git init</div><span class="cmd-example">git init</span><p class="cmd-desc">Turn the current directory into a new Git repository.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git clone</div><span class="cmd-example">git clone git@github.com:user/repo.git</span><p class="cmd-desc">Download a full copy of a remote repository, including its history.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git config --global</div><span class="cmd-example">git config --global user.name "Suleman"</span><p class="cmd-desc">Set identity/preferences that apply across all repos for this user.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git config --list</div><span class="cmd-example">git config --list</span><p class="cmd-desc">Show all effective Git configuration values currently in use.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># daily workflow</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ git status</div><span class="cmd-example">git status</span><p class="cmd-desc">Show staged, unstaged, and untracked changes in the working directory.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git add</div><span class="cmd-example">git add .</span><p class="cmd-desc">Stage file changes to be included in the next commit.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git commit -m</div><span class="cmd-example">git commit -m "fix: handle null response"</span><p class="cmd-desc">Save staged changes to history with a descriptive message.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git diff</div><span class="cmd-example">git diff --staged</span><p class="cmd-desc">Show line-by-line changes not yet committed (add --staged for staged ones).</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># branching &amp; merging</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ git branch</div><span class="cmd-example">git branch -a</span><p class="cmd-desc">List local (and with -a, remote-tracking) branches.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git switch -c</div><span class="cmd-example">git switch -c feature/login</span><p class="cmd-desc">Create and switch to a new branch in one step.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git merge</div><span class="cmd-example">git merge feature/login</span><p class="cmd-desc">Integrate another branch's commits into the current branch.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git rebase</div><span class="cmd-example">git rebase main</span><p class="cmd-desc">Replay current branch commits on top of another branch for a linear history.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git branch -d</div><span class="cmd-example">git branch -d feature/login</span><p class="cmd-desc">Delete a local branch once it's merged.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--accent);background:color-mix(in srgb, var(--accent) 9%, transparent);border:1px solid color-mix(in srgb, var(--accent) 22%, transparent);"># remotes &amp; sync</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ git remote -v</div><span class="cmd-example">git remote -v</span><p class="cmd-desc">Show the remote repositories this repo is linked to.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git push</div><span class="cmd-example">git push -u origin feature/login</span><p class="cmd-desc">Upload local commits to a remote branch (-u sets tracking for future pushes).</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git pull</div><span class="cmd-example">git pull --rebase</span><p class="cmd-desc">Fetch and integrate remote changes into the current branch.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git fetch</div><span class="cmd-example">git fetch origin</span><p class="cmd-desc">Download remote history without merging it into your working branch.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--success);background:color-mix(in srgb, var(--success) 9%, transparent);border:1px solid color-mix(in srgb, var(--success) 22%, transparent);"># inspecting history</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ git log --oneline</div><span class="cmd-example">git log --oneline --graph --all</span><p class="cmd-desc">Compact, visual view of commit history across all branches.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git show</div><span class="cmd-example">git show a1b2c3d</span><p class="cmd-desc">Show the full diff and metadata for a single commit.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git blame</div><span class="cmd-example">git blame app.py</span><p class="cmd-desc">Show which commit last changed each line of a file.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="cmd-category">
+                        <span class="section-badge" style="color:var(--warning);background:color-mix(in srgb, var(--warning) 9%, transparent);border:1px solid color-mix(in srgb, var(--warning) 22%, transparent);"># undoing &amp; cleanup</span>
+                        <div class="cmd-grid">
+                            <div class="cmd-card"><div class="cmd-name">$ git restore</div><span class="cmd-example">git restore --staged app.py</span><p class="cmd-desc">Unstage a file, or discard unstaged local edits back to the last commit.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git reset --hard</div><span class="cmd-example">git reset --hard HEAD~1</span><p class="cmd-desc">Move the branch pointer back a commit, discarding changes since then.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git revert</div><span class="cmd-example">git revert a1b2c3d</span><p class="cmd-desc">Create a new commit that undoes a previous one — safe on shared history.</p></div>
+                            <div class="cmd-card"><div class="cmd-name">$ git stash</div><span class="cmd-example">git stash pop</span><p class="cmd-desc">Temporarily shelve uncommitted changes, then reapply them later.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <span>© 2026 SULEMAN BUTT</span>
+                        <div>STATUS: ACTIVE | v1.8 </div>
                     </div>
                 </div>
             </div>
@@ -647,7 +734,7 @@
                 </div>
                 <div class="card-body">
                     <div class="eyebrow eyebrow-lg">$ kubectl cheatsheet</div>
-                    <h1 class="title">Kubernetes Essentials<span class="cursor">_</span></h1>
+                    <h1 class="title">☸️ Kubernetes Essentials<span class="cursor">_</span></h1>
                     <p class="description">25 kubectl commands for day-to-day cluster work — context switching, workloads, deployments and scaling, services and networking, debugging, and namespaces/secrets.</p>
 
                     <div class="cmd-category">
@@ -713,7 +800,7 @@
 
                     <div class="footer">
                         <span>© 2026 SULEMAN BUTT</span>
-                        <div>STATUS: ACTIVE | v1.7 </div>
+                        <div>STATUS: ACTIVE | v1.8 </div>
                     </div>
                 </div>
             </div>
